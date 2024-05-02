@@ -1,12 +1,14 @@
 import './App.css';
-import { useEffect } from 'react';
-import socket from './conn';
+import { useEffect, useState } from 'react';
+import Login from './components/Login';
+//import socket from './conn';
 
 import Header from './components/Header';
 import Profile from './components/Profile';
-import Leaderboard from './components/Leaderboard';
+//import Leaderboard from './components/Leaderboard';
 
 function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
 
@@ -15,8 +17,10 @@ function App() {
   return (
     <div className="App">
       <Header />
+      {
+        loggedIn ? <Profile /> : <Login status={true}/>
+      }
       <Profile />
-      <Leaderboard />
     </div>
   )
 }

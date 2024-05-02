@@ -1,8 +1,10 @@
+
 const leaderboardData = [
  { name: 'Steve Stef', score: 100, rank: 1 },
  { name: 'Alice Smith', score: 95, rank: 2 },
  { name: 'Bob Johnson', score: 90, rank: 3 },
 ];
+
 const Leaderboard = () => {
  return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
