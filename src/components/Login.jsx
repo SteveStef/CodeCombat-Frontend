@@ -15,10 +15,11 @@ const LoginSignup = (props) => {
         setError('Please fill in all fields');
         return;
       }
+      let un = username.trim().toLowerCase();
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ un, password }),
       };
       const response = await fetch(url + '/login', requestOptions);
       const data = await response.json();
@@ -40,11 +41,14 @@ const LoginSignup = (props) => {
         setError('Passwords do not match');
         return;
       }
+
+      let un = username.trim().toLowerCase();
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ un, password }),
       };
+
       const response = await fetch(url + '/signup', requestOptions);
       const data = await response.json();
       console.log(data);
@@ -125,7 +129,7 @@ const LoginSignup = (props) => {
               className="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
               onClick={() => setIsLogin(!isLogin)}
             >
-              {isLogin ? 'Need an account? Sign Up' : 'Have an account? Log In'}
+              { isLogin ? 'Need an account? Sign Up' : 'Have an account? Log In' }
             </a>
           </div>
         </form>
