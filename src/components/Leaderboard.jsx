@@ -5,7 +5,7 @@ const leaderboardData = [
  { name: 'Bob Johnson', score: 90, rank: 3 },
 ];
 
-const Leaderboard = () => {
+const Leaderboard = (props) => {
  return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800">
       <div className="w-full max-w-3xl mx-auto">

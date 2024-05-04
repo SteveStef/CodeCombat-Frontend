@@ -15,15 +15,28 @@ const LoginSignup = (props) => {
         setError('Please fill in all fields');
         return;
       }
+
       let un = username.trim().toLowerCase();
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ un, password }),
+        body: JSON.stringify({ username: un, password }),
       };
+
       const response = await fetch(url + '/login', requestOptions);
+      if (!response.ok) {
+        if(response.status === 401) setError('Invalid credentials');
+        else setError('Internal server error');
+        return;
+      }
+
       const data = await response.json();
+      const { id } = data;
+
+      document.cookie = `sessionid=${id}; path=/`;
       console.log(data);
+      setError('');
+
     } catch (error) {
       console.error(error);
       setError(error.message);
@@ -41,20 +54,37 @@ const LoginSignup = (props) => {
         setError('Passwords do not match');
         return;
       }
-
+      if(password.length < 6) {
+        setError('Password too short');
+        return;
+      }
       let un = username.trim().toLowerCase();
       const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ un, password }),
+        body: JSON.stringify({ username: un, password }),
       };
-
       const response = await fetch(url + '/signup', requestOptions);
-      const data = await response.json();
-      console.log(data);
+      if(!response.ok) {
+        setError('Internal server error');
+        return;
+      } else {
+        const data = await response.json();
+        console.log(data);
+        if(data.error) {
+          setError("Username already exists");
+          return;
+        }
+        // change the query parameter to login
+        setError('');
+        const url = new URL(window.location.href);
+        url.searchParams.set('page', 'login');
+        window.location.href = url.href;
+        console.log(data);
+      }
     } catch (error) {
       console.error(error);
-      setError(error.message);
+      setError("Internal server error");
     }
   };
 

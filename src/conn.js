@@ -21,7 +21,7 @@ const connect = () => {
     };
 
     socket.onmessage = (msg) => {
-      console.log(msg.data); // Use msg.data to access the message content
+      console.log(msg.data); 
     };
 
     socket.onclose = (event) => {

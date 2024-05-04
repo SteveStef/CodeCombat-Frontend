@@ -13,7 +13,7 @@ const leaderboardData = [
 // get this from the database
 const colors = [1, 0, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0];
 
-const Profile = () => {
+const Profile = (props) => {
   const start = startOfMonth(new Date());
   const end = endOfMonth(new Date());
   const days = eachDayOfInterval({ start, end });
