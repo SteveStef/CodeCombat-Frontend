@@ -24,47 +24,48 @@ const getCookie = (name) => {
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [page , setPage] = useState('home');
+  const [page , setPage] = useState('editor');
   const [username, setUsername] = useState('');
   const [showLogin, setShowLogin] = useState(true);
   const [user, setUser] = useState({});
 
-  const urlParams = new URLSearchParams(window.location.search);
+  console.log('User:', user);
 
-  const auth = () => {
+  const auth = async () => {
     const cookie = getCookie('sessionid');
     if (cookie) {
       console.log('User logged in');
       setLoggedIn(true);
-      if(!user) {
-        // fetch user data
+      if(!user.username) {
+        const requestOptions = { method: 'GET', headers: { 'Content-Type': 'application/json', 'Authorization': cookie }};
+        const url = 'http://localhost:8081/auth';
+        const response = await fetch(url, requestOptions);
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          setUsername(data.username);
+          setUser(data);
+        }
       }
+
     } else {
       console.log('User not logged in or the session expired');
       setLoggedIn(false);
     }
   };
 
-  const checkPage = () => {
-    if (urlParams.has('page')) {
-      const page = urlParams.get('page');
-      setPage(page);
-    } else {
-      setPage('home');
-    }
-  };
-
   useEffect(() => {
     auth();
-    checkPage();
-  });
+  }, []);
 
   return (
     <div className="App">
-      <Header setPage={setPage}/>
+      <Header setPage={setPage} loggedIn={loggedIn}/>
       {
-        page.includes('username') ? <Profile setPage={setPage} user={username} /> : page === 'leaderboard' ? <Leaderboard user={username} setPage={setPage}/> 
-          : page.includes('editor') ? <ProblemEditor setPage={setPage} user={username}/> : <Login status={showLogin} setShowLogin={setShowLogin}/>
+        page.includes('username') ? <Profile setPage={setPage} user={username} /> 
+          : page === 'leaderboard' ? <Leaderboard user={username} setPage={setPage}/> 
+            : page.includes('editor') ? <ProblemEditor setPage={setPage} user={username}/> 
+              : <Login status={showLogin} setShowLogin={setShowLogin} setPage={setPage} setLoggedIn={setLoggedIn} setUser={setUser} />
       }
     </div>
   )

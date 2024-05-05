@@ -37,6 +37,10 @@ const LoginSignup = (props) => {
       console.log(data);
       setError('');
 
+      props.setLoggedIn(true);
+      props.setPage('username');
+      props.setUser(data);
+
     } catch (error) {
       console.error(error);
       setError(error.message);
@@ -75,12 +79,10 @@ const LoginSignup = (props) => {
           setError("Username already exists");
           return;
         }
-        // change the query parameter to login
+
         setError('');
-        const url = new URL(window.location.href);
-        url.searchParams.set('page', 'login');
-        window.location.href = url.href;
         console.log(data);
+
       }
     } catch (error) {
       console.error(error);
