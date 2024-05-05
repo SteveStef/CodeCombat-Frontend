@@ -74,7 +74,6 @@ const LoginSignup = (props) => {
         return;
       } else {
         const data = await response.json();
-        console.log(data);
         if(data.error) {
           setError("Username already exists");
           return;

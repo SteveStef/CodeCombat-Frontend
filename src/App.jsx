@@ -27,31 +27,40 @@ function App() {
   const [page , setPage] = useState('editor');
   const [username, setUsername] = useState('');
   const [showLogin, setShowLogin] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({});
 
-  console.log('User:', user);
-
   const auth = async () => {
-    const cookie = getCookie('sessionid');
-    if (cookie) {
-      console.log('User logged in');
-      setLoggedIn(true);
-      if(!user.username) {
-        const requestOptions = { method: 'GET', headers: { 'Content-Type': 'application/json', 'Authorization': cookie }};
-        const url = 'http://localhost:8081/auth';
-        const response = await fetch(url, requestOptions);
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data);
-          setUsername(data.username);
-          setUser(data);
+    setLoading(true);
+    try {
+      const cookie = getCookie('sessionid');
+      if (cookie) {
+        console.log('User logged in');
+        setLoggedIn(true);
+        if(!user.username) {
+          const requestOptions = { method: 'GET', headers: { 'Content-Type': 'application/json', 'Authorization': cookie }};
+          const url = 'http://localhost:8081/auth';
+          const response = await fetch(url, requestOptions);
+          if (response.ok) {
+            const data = await response.json();
+            if(data.length === 0) {
+              console.log('User not logged in or the session expired');
+              setLoggedIn(false);
+              return;
+            }
+            setUsername(data[0].username);
+            setUser(data[0]);
+          }
         }
-      }
 
-    } else {
-      console.log('User not logged in or the session expired');
-      setLoggedIn(false);
+      } else {
+        console.log('User not logged in or the session expired');
+        setLoggedIn(false);
+      }
+    } catch (error) {
+      console.log(error);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -62,7 +71,7 @@ function App() {
     <div className="App">
       <Header setPage={setPage} loggedIn={loggedIn}/>
       {
-        page.includes('username') ? <Profile setPage={setPage} user={username} /> 
+        page.includes('username') ? <Profile setPage={setPage} user={user} /> 
           : page === 'leaderboard' ? <Leaderboard user={username} setPage={setPage}/> 
             : page.includes('editor') ? <ProblemEditor setPage={setPage} user={username}/> 
               : <Login status={showLogin} setShowLogin={setShowLogin} setPage={setPage} setLoggedIn={setLoggedIn} setUser={setUser} />

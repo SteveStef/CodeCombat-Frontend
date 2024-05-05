@@ -2,17 +2,6 @@ import profilePic from '../assets/robo0.png';
 import { eachDayOfInterval, endOfMonth, format, startOfMonth } from 'date-fns';
 import Chart from './Chart';
 
-/*
-const leaderboardData = [
-  { name: 'Steve Stef', score: 100, rank: 1 },
-  { name: 'Alice Smith', score: 95, rank: 2 },
-  { name: 'Bob Johnson', score: 90, rank: 3 },
-];
-*/
-
-// get this from the database
-const colors = [1, 0, 1, 1, 1,1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0];
-
 const Profile = (props) => {
   const start = startOfMonth(new Date());
   const end = endOfMonth(new Date());
@@ -26,11 +15,11 @@ const Profile = (props) => {
               <img className="w-48 h-48 object-cover mx-auto rounded-full md:w-48 md:h-48 lg:w-64 lg:h-64" src={profilePic} alt="Profile" />
               <div className="flex flex-col">
               <h1 className="text-center text-xl font-bold text-gray-900 dark:text-white">
-                  Steve Stef
-                <span className="font-bold" style={{color: "lightblue"}}> (GUARDIAN)</span> 
+                  {props.user.username}
+                <span className="font-bold" style={{color: "lightblue"}}> ({props.user.level})</span> 
                 </h1>
                 <div className="mt-5">
-                  <Chart />
+                  <Chart user={props.user}/>
                 </div>
               </div>
             </div>
@@ -40,7 +29,7 @@ const Profile = (props) => {
                 <div className="grid grid-cols-7 gap-4 mt-4">
                   {days.map((day, i) => (
                     <div key={day} className="text-center">
-                      <p className="text-gray-700 dark:text-gray-300"><span style={{ color: colors[i] === 1 ? "lightgreen" : "gray"}}>{format(day, 'dd')}</span></p>
+                      <p className="text-gray-700 dark:text-gray-300"><span style={{ color: props.user.activityLog[i] === 1 ? "lightgreen" : "gray"}}>{format(day, 'dd')}</span></p>
                       <p className="text-xl font-bold text-gray-900 dark:text-white"></p>
                     </div>
                   ))}
@@ -55,32 +44,32 @@ const Profile = (props) => {
 
                 <div className="text-center">
                   <p className="text-gray-700 dark:text-gray-300">Language</p>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">JavaScript</p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-white">{props.user.language || "NA"}</p>
                 </div>
 
                 <div className="text-center">
                   <p className="text-gray-700 dark:text-gray-300">ELO</p>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">1034</p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-white">{props.user.elo}</p>
                 </div>
 
                 <div className="text-center">
                   <p className="text-gray-700 dark:text-gray-300">Problems Solved</p>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">141</p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-white">{props.user.solved}</p>
                 </div>
 
                 <div className="text-center">
                   <p className="text-gray-700 dark:text-gray-300">Rank</p>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">#2</p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-white">#{props.user.rank}</p>
                 </div>
 
                 <div className="text-center">
                   <p className="text-gray-700 dark:text-gray-300">Wins</p>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">100</p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-white">{props.user.wins}</p>
                 </div>
 
                 <div className="text-center">
                   <p className="text-gray-700 dark:text-gray-300">Loses</p>
-                  <p className="text-xl font-bold text-gray-900 dark:text-white">45</p>
+                  <p className="text-xl font-bold text-gray-900 dark:text-white">{props.user.loses}</p>
                 </div>
               </div>
             </div>
