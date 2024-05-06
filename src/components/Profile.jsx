@@ -2,7 +2,28 @@ import profilePic from '../assets/robo0.png';
 import { eachDayOfInterval, endOfMonth, format, startOfMonth } from 'date-fns';
 import Chart from './Chart';
 
+const url = "http://localhost:8081";
 const Profile = (props) => {
+
+  // create the connection through ws
+  const playRanked = async () => {
+    try {
+      const requestOptions = {
+        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+      };
+
+      const response = await fetch(`${url}/ranked`, requestOptions);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   const start = startOfMonth(new Date());
   const end = endOfMonth(new Date());
   const days = eachDayOfInterval({ start, end });
@@ -76,7 +97,7 @@ const Profile = (props) => {
           </div>
 
           <div className="flex justify-center" style={{marginTop: "1rem"}}>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded dark:bg-blue-700 dark:hover:bg-blue-900" style={{width: "50%"}}>
+            <button onClick={playRanked} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded dark:bg-blue-700 dark:hover:bg-blue-900" style={{width: "50%"}}>
               Play Ranked Match
             </button>
           </div>

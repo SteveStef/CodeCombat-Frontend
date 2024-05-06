@@ -5,7 +5,7 @@ import Header from './components/Header';
 import Profile from './components/Profile';
 import ProblemEditor from './components/Editor';
 import Leaderboard from './components/Leaderboard';
-//import socket from './conn';
+import socket from './conn';
 
 const getCookie = (name) => {
   let cookieValue = null;
@@ -50,9 +50,10 @@ function App() {
             }
             setUsername(data[0].username);
             setUser(data[0]);
+            console.log("Data being sent to the server: ", data[0]);
+            socket.send(JSON.stringify({type: "login", ...data[0]}));
           }
         }
-
       } else {
         console.log('User not logged in or the session expired');
         setLoggedIn(false);
