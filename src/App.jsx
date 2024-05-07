@@ -5,6 +5,7 @@ import Header from './components/Header';
 import Profile from './components/Profile';
 import ProblemEditor from './components/Editor';
 import Leaderboard from './components/Leaderboard';
+import Vs from './components/Vs';
 import socket from './conn';
 
 const getCookie = (name) => {
@@ -27,6 +28,7 @@ function App() {
   const [page , setPage] = useState('editor');
   const [username, setUsername] = useState('');
   const [showLogin, setShowLogin] = useState(true);
+  const [showVs, setShowVs] = useState(false);
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({});
 
@@ -65,13 +67,27 @@ function App() {
   };
 
   useEffect(() => {
-
     socket.onmessage = (e) => {
-      window.location.reload();
+      try{
+        const data = JSON.parse(e.data);
+        console.log(data);
+        console.log("setting the page to vs");
+        setShowVs(true);
+        setTimeout(() => {
+          setShowVs(false);
+          window.location.reload();
+        }, 15000);
+      } catch(err) {
+        console.log("Dude the data needs to be an object")
+        console.log(err);
+      }
     }
-
     auth();
   }, []);
+
+  if (showVs) {
+    return <Vs />
+  }
 
   return (
     <div className="App">
