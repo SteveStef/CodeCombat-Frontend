@@ -65,6 +65,11 @@ function App() {
   };
 
   useEffect(() => {
+
+    socket.onmessage = (e) => {
+      window.location.reload();
+    }
+
     auth();
   }, []);
 
@@ -72,10 +77,10 @@ function App() {
     <div className="App">
       <Header setPage={setPage} loggedIn={loggedIn}/>
       {
-        page.includes('username') ? <Profile setPage={setPage} user={user} /> 
+        page.includes('username') ? <Profile setPage={setPage} user={user} socket={socket} /> 
           : page === 'leaderboard' ? <Leaderboard user={username} setPage={setPage}/> 
             : page.includes('editor') ? <ProblemEditor setPage={setPage} user={username}/> 
-              : <Login status={showLogin} setShowLogin={setShowLogin} setPage={setPage} setLoggedIn={setLoggedIn} setUser={setUser} />
+              : <Login socket={socket} status={showLogin} setShowLogin={setShowLogin} setPage={setPage} setLoggedIn={setLoggedIn} setUser={setUser} />
       }
     </div>
   )

@@ -37,6 +37,7 @@ const LoginSignup = (props) => {
       console.log(data);
       setError('');
 
+      props.socket.send(JSON.stringify({type: "login", ...data}));
       props.setLoggedIn(true);
       props.setPage('username');
       props.setUser(data);

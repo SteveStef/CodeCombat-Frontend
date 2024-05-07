@@ -10,6 +10,7 @@ const Profile = (props) => {
     try {
       const requestOptions = {
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: props.user.username }),
         method: "POST",
       };
 
@@ -17,8 +18,10 @@ const Profile = (props) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data = await response.json();
-      console.log(data);
+
+      // start listening on the socket
+
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
