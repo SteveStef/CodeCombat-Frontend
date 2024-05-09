@@ -37,6 +37,7 @@ Output: [0,1]
 `;
 
 const ProblemEditor = (props) => {
+  console.log(props)
   const [code, setCode] = useState('');
   const [language, setLanguage] = useState('javascript');
   const [output, setOutput] = useState('');
@@ -48,14 +49,32 @@ const ProblemEditor = (props) => {
   const [hidePrompt, setHidePrompt] = useState(false);
 
   const [prompt, setPrompt] = useState(prompt2);
-  const [title, setTitle] = useState("1. Two Sum");
-
-  console.log(props);
+  const [title, setTitle] = useState("");
+  const [timer, setTimer] = useState(0);
 
   useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer(prevTimer => {
+        if(prevTimer === 0) {
+          clearInterval(interval);
+          return 0;
+        } else {
+          if(prevTimer === 1) {
+            handleSubmitCode();
+          }
+          return prevTimer - 1;
+        }
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  } , []);
+
+  useEffect(() => {
+    if(!props.ranked.question) return;
     setTitle(props.ranked.question.Title);
     setPrompt(props.ranked.question.Description);
-  }, []);
+    setTimer(props.ranked.question.Time * 60);
+  }, [props.ranked.question]);
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);
@@ -142,6 +161,9 @@ public class Main {
           <div className="flex justify-between items-center">
             <h2 className="text-xl">Code Editor</h2>
             <div className="flex-grow flex justify-end">
+      <div className="z-50 p-2 border-t-4 border-blue-500 bg-gray-500 rounded-md flex items-center justify-center text-bold text-2xl px-4 mr-4" style={{height: "37px"}}>
+            {Math.floor(timer / 60).toString().padStart(2, '0')}:{Math.floor(timer % 60).toString().padStart(2, '0')}
+      </div>
 
               <button onClick={() => setKeyboardMode(keyboardMode === "normal" ? "vim" : keyboardMode === "vim" ? "normal" : "normal")} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded" style={{marginBottom: "10px"}}>{ keyboardMode === "vim" ? "NORMAL" : "VIM MODE" }</button>
 

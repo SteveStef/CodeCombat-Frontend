@@ -34,6 +34,7 @@ function App() {
   const [loading, setLoading] = useState(false);
 
   const auth = async () => {
+    console.log("Checking if user is logged in");
     setLoading(true);
     try {
       const cookie = getCookie('sessionid');
@@ -45,16 +46,20 @@ function App() {
           const url = 'http://localhost:8081/auth';
           const response = await fetch(url, requestOptions);
           if (response.ok) {
-            const data = await response.json();
-            if(data.length === 0) {
-              console.log('User not logged in or the session expired');
-              setLoggedIn(false);
+            const data = JSON.parse(await response.text());
+
+            if(data.player) { // the problem is that when we load back into the match it doesnt load the props
+              console.log('User logged in and is currently in a game');
+              setUsername(data.player.username);
+              setUser(data.player);
+              setSetData(data.game);
+              setPage('editor')
               return;
             }
-            setUsername(data[0].username);
-            setUser(data[0]);
-            console.log("Data being sent to the server: ", data[0]);
-            socket.send(JSON.stringify({type: "login", ...data[0]}));
+
+            setUsername(data.username);
+            setUser(data);
+            socket.send(JSON.stringify({type: "login", ...data}));
           }
         }
       } else {

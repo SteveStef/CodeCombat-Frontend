@@ -91,7 +91,7 @@ const Profile = (props) => {
                   <span className="font-bold" style={{color: "lightblue"}}> ({props.user.level})</span> 
                 </h1>
                 <div className="mt-5">
-                  <Chart user={props.user}/>
+                  { props.user && <Chart user={props.user}/> }
                 </div>
               </div>
             </div>
@@ -101,7 +101,7 @@ const Profile = (props) => {
                 <div className="grid grid-cols-7 gap-4 mt-4">
                   {days.map((day, i) => (
                     <div key={day} className="text-center">
-                      <p className="text-gray-700 dark:text-gray-300"><span style={{ color: props.user.activityLog[i] === 1 ? "lightgreen" : "gray"}}>{format(day, 'dd')}</span></p>
+                      <p className="text-gray-700 dark:text-gray-300"><span style={{ color: props.user && props.user.activityLog && props.user.activityLog[i] === 1 ? "lightgreen" : "gray"}}>{format(day, 'dd')}</span></p>
                       <p className="text-xl font-bold text-gray-900 dark:text-white"></p>
                     </div>
                   ))}
