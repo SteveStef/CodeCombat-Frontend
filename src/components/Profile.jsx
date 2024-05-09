@@ -5,6 +5,7 @@ import Chart from './Chart';
 
 const url = "http://localhost:8081";
 const Profile = (props) => {
+
   const [timer, setTimer] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
 

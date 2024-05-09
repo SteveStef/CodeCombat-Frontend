@@ -20,11 +20,6 @@ const connect = () => {
       socket.send(data);
     };
 
-    //socket.onmessage = (msg) => {
-     // window.location.reload();
-      //console.log(msg.data); 
-    //};
-
     socket.onclose = (event) => {
       console.log('Disconnected from server', event.code, event.reason);
     };

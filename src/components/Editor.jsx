@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AceEditor from 'react-ace';
 
 // Languages
@@ -19,7 +19,7 @@ import 'ace-builds/src-noconflict/theme-xcode';
 // Keybinding
 import 'ace-builds/src-noconflict/keybinding-vim';
 
-const prompt = `Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order.
+const prompt2 = `Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target. You may assume that each input would have exactly one solution, and you may not use the same element twice. You can return the answer in any order.
 
 Example 1:
 Input: nums = [2,7,11,15], target = 9
@@ -36,7 +36,7 @@ Input: nums = [3,3], target = 6
 Output: [0,1]
 `;
 
-const ProblemEditor = () => {
+const ProblemEditor = (props) => {
   const [code, setCode] = useState('');
   const [language, setLanguage] = useState('javascript');
   const [output, setOutput] = useState('');
@@ -46,6 +46,16 @@ const ProblemEditor = () => {
   const [keyboardMode, setKeyboardMode] = useState("normal");
   const [theme, setTheme] = useState("monokai");
   const [hidePrompt, setHidePrompt] = useState(false);
+
+  const [prompt, setPrompt] = useState(prompt2);
+  const [title, setTitle] = useState("1. Two Sum");
+
+  console.log(props);
+
+  useEffect(() => {
+    setTitle(props.ranked.question.Title);
+    setPrompt(props.ranked.question.Description);
+  }, []);
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);
@@ -107,7 +117,7 @@ public class Main {
     <div className="bg-gray-100 dark:bg-gray-800">
       <div style={{ display: 'flex', color: "white", height: "94.2vh" }}>
         <div style={{ flex: 1, padding: '1rem', overflow: 'auto' }}>
-          <h1 style={{fontSize: "30px"}}>1. Two Sum</h1>
+          <h1 style={{fontSize: "30px"}}>{title}</h1>
 
           <div style={{ position: 'relative', padding: '1rem', borderRadius: '5px', color: "white", backgroundColor: "bg-gray-700", border: "1px solid bg-gray-200" }}>
             <pre style={{ padding: '1rem', borderRadius: '5px', color: "white", overflow: 'auto' }}>

@@ -25,12 +25,13 @@ const getCookie = (name) => {
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
-  const [page , setPage] = useState('editor');
+  const [page , setPage] = useState('username');
   const [username, setUsername] = useState('');
   const [showLogin, setShowLogin] = useState(true);
   const [showVs, setShowVs] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState({});
+  const [setData, setSetData] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const auth = async () => {
     setLoading(true);
@@ -70,12 +71,13 @@ function App() {
     socket.onmessage = (e) => {
       try{
         const data = JSON.parse(e.data);
-        console.log(data);
+        console.log("Here is the data we got back ", data);
         console.log("setting the page to vs");
         setShowVs(true);
+        setSetData(data);
         setTimeout(() => {
           setShowVs(false);
-          window.location.reload();
+          setPage('editor');
         }, 15000);
       } catch(err) {
         console.log("Dude the data needs to be an object")
@@ -86,16 +88,16 @@ function App() {
   }, []);
 
   if (showVs) {
-    return <Vs />
+    return <Vs data={setData}/>
   }
 
   return (
     <div className="App">
       <Header setPage={setPage} loggedIn={loggedIn}/>
       {
-        page.includes('username') ? <Profile setPage={setPage} user={user} socket={socket} /> 
+        page.includes('username') && Object.keys(user).length > 0 ? <Profile setPage={setPage} user={user} socket={socket} /> 
           : page === 'leaderboard' ? <Leaderboard user={username} setPage={setPage}/> 
-            : page.includes('editor') ? <ProblemEditor setPage={setPage} user={username}/> 
+            : page.includes('editor') ? <ProblemEditor setPage={setPage} user={username} ranked={setData} /> 
               : <Login socket={socket} status={showLogin} setShowLogin={setShowLogin} setPage={setPage} setLoggedIn={setLoggedIn} setUser={setUser} />
       }
     </div>
