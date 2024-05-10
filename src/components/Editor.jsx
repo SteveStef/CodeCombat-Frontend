@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import AceEditor from 'react-ace';
 
 // Languages
@@ -36,8 +37,14 @@ Input: nums = [3,3], target = 6
 Output: [0,1]
 `;
 
+ProblemEditor.propTypes = {
+  ranked: PropTypes.object.isRequired,
+};
+
+
 const ProblemEditor = (props) => {
-  console.log(props)
+
+  console.log(props.ranked);
   const [code, setCode] = useState('');
   const [language, setLanguage] = useState('javascript');
   const [output, setOutput] = useState('');
@@ -69,12 +76,26 @@ const ProblemEditor = (props) => {
     return () => clearInterval(interval);
   } , []);
 
+  function secondsUntilGivenTime(givenTime) {
+    const givenDate = new Date(givenTime * 1000);
+    const currentTime = Date.now();
+    const differenceInMilliseconds = currentTime - givenDate.getTime();
+    const differenceInSeconds = differenceInMilliseconds / 1000;
+    return differenceInSeconds;
+  }
+
   useEffect(() => {
-    if(!props.ranked.question) return;
-    setTitle(props.ranked.question.Title);
-    setPrompt(props.ranked.question.Description);
-    setTimer(props.ranked.question.Time * 60);
-  }, [props.ranked.question]);
+    if(props.ranked.question) {
+      setTitle(props.ranked.question.Title);
+      setPrompt(props.ranked.question.Description);
+      setTimer(props.ranked.question.Time * 60);
+
+    } else if(props.ranked.Question) { // for reload
+      setTitle(props.ranked.Question.Title);
+      setPrompt(props.ranked.Question.Description);
+      setTimer(props.ranked.Question.Time * 60 - secondsUntilGivenTime(props.ranked.Question.StartTime));
+    }
+  }, [props.ranked.question, props.ranked.Question]);
 
   const handleCodeChange = (newCode) => {
     setCode(newCode);

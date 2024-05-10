@@ -1,7 +1,12 @@
 import { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import profilePic from '../assets/robo0.png';
 import { eachDayOfInterval, endOfMonth, format, startOfMonth } from 'date-fns';
 import Chart from './Chart';
+
+Profile.propTypes = {
+  user: PropTypes.object.isRequired,
+};
 
 const url = "http://localhost:8081";
 const Profile = (props) => {

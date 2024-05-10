@@ -1,3 +1,11 @@
+import PropTypes from "prop-types";
+
+
+Header.propTypes = {
+  setPage: PropTypes.func.isRequired,
+  loggedIn: PropTypes.bool.isRequired,
+  user: PropTypes.object,
+};
 
 const Header = (props) => {
   return (
