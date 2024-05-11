@@ -47,6 +47,7 @@ function App() {
           const response = await fetch(url, requestOptions);
           if (response.ok) {
             const data = JSON.parse(await response.text());
+            //console.log(data);
 
             if(data.player) { // the problem is that when we load back into the match it doesnt load the props
               console.log('User logged in and is currently in a game');
@@ -74,7 +75,8 @@ function App() {
 
   useEffect(() => {
     socket.onmessage = (e) => {
-      try{
+      try {
+        console.log("Here is the data we got back ", e.data);
         const data = JSON.parse(e.data);
         console.log("Here is the data we got back ", data);
         console.log("setting the page to vs");

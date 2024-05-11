@@ -2,14 +2,6 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 const url = 'http://localhost:8081';
 
-LoginSignup.propTypes = {
-  status: PropTypes.bool.isRequired,
-  socket: PropTypes.object.isRequired,
-  setLoggedIn: PropTypes.func.isRequired,
-  setPage: PropTypes.func.isRequired,
-  setUser: PropTypes.func.isRequired,
-};
-
 const LoginSignup = (props) => {
   const [isLogin, setIsLogin] = useState(props.status);
   const [password2, setPassword2] = useState('');
@@ -177,6 +169,14 @@ const LoginSignup = (props) => {
       </div>
     </div>
   );
+};
+
+LoginSignup.propTypes = {
+  status: PropTypes.bool.isRequired,
+  socket: PropTypes.object.isRequired,
+  setLoggedIn: PropTypes.func.isRequired,
+  setPage: PropTypes.func.isRequired,
+  setUser: PropTypes.func.isRequired,
 };
 
 export default LoginSignup;

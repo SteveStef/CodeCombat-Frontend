@@ -2,13 +2,8 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Header from './Header';
 
-Vs.propTypes = {
-  data: PropTypes.object.isRequired,
-};
-
 const Vs = (props) => {
   const [timer, setTimer] = useState(15);
-
   const player1 = props.data.player1;
   const player2 = props.data.player2;
 
@@ -145,5 +140,9 @@ const Vs = (props) => {
     </div>
  );
 }
+
+Vs.propTypes = {
+  data: PropTypes.object.isRequired,
+};
 
 export default Vs;

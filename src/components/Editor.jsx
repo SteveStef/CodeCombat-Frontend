@@ -37,9 +37,6 @@ Input: nums = [3,3], target = 6
 Output: [0,1]
 `;
 
-ProblemEditor.propTypes = {
-  ranked: PropTypes.object.isRequired,
-};
 
 
 const ProblemEditor = (props) => {
@@ -252,6 +249,10 @@ public class Main {
       </div>
     </div>
   );
+};
+
+ProblemEditor.propTypes = {
+  ranked: PropTypes.object.isRequired,
 };
 
 export default ProblemEditor;
