@@ -45,15 +45,17 @@ function App() {
           const requestOptions = { method: 'GET', headers: { 'Content-Type': 'application/json', 'Authorization': cookie }};
           const url = 'http://localhost:8081/auth';
           const response = await fetch(url, requestOptions);
+          console.log(response);
           if (response.ok) {
             const data = JSON.parse(await response.text());
+            console.log(data);
             //console.log(data);
 
             if(data.player) { // the problem is that when we load back into the match it doesnt load the props
               console.log('User logged in and is currently in a game');
               setUsername(data.player.username);
               setUser(data.player);
-              setSetData(data.game);
+              setSetData({...data.game, timeLeft: data.timeLeft});
               setPage('editor')
               return;
             }
